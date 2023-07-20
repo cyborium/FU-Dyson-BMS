@@ -1,55 +1,55 @@
 /**
-  ADC Generated Driver API Header File
+ ADC Generated Driver API Header File
 
-  @Company
-    Microchip Technology Inc.
+ @Company
+   Microchip Technology Inc.
 
-  @File Name
-    adc.h
+ @File Name
+   adc.h
 
-  @Summary
-    This is the generated header file for the ADC driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+ @Summary
+   This is the generated header file for the ADC driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  @Description
-    This header file provides APIs for driver for ADC.
-    Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.7
-        Device            :  PIC16LF1847
-        Driver Version    :  2.02
-    The generated drivers are tested against the following:
-        Compiler          :  XC8 2.31 and above
-        MPLAB             :  MPLAB X 5.45
-*/
+ @Description
+   This header file provides APIs for driver for ADC.
+   Generation Information :
+       Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.7
+       Device            :  PIC16LF1847
+       Driver Version    :  2.02
+   The generated drivers are tested against the following:
+       Compiler          :  XC8 2.31 and above
+       MPLAB             :  MPLAB X 5.45
+ */
 
 /*
-    (c) 2018 Microchip Technology Inc. and its subsidiaries. 
-    
-    Subject to your compliance with these terms, you may use Microchip software and any 
-    derivatives exclusively with Microchip products. It is your responsibility to comply with third party 
-    license terms applicable to your use of third party software (including open source software) that 
+    (c) 2018 Microchip Technology Inc. and its subsidiaries.
+
+    Subject to your compliance with these terms, you may use Microchip software and any
+    derivatives exclusively with Microchip products. It is your responsibility to comply with third party
+    license terms applicable to your use of third party software (including open source software) that
     may accompany Microchip software.
-    
-    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
-    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY 
-    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS 
+
+    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
+    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY
+    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS
     FOR A PARTICULAR PURPOSE.
-    
-    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
-    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
-    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP 
-    HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO 
-    THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL 
-    CLAIMS IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT 
-    OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS 
+
+    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
+    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP
+    HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO
+    THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL
+    CLAIMS IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT
+    OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS
     SOFTWARE.
-*/
+ */
 
 #ifndef ADC_H
 #define ADC_H
 
 /**
   Section: Included Files
-*/
+ */
 
 #include <xc.h>
 #include <stdint.h>
@@ -57,13 +57,14 @@
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-    extern "C" {
+extern "C"
+{
 
 #endif
 
 /**
   Section: Data Types Definitions
-*/
+ */
 
 /**
  *  result size of an A/D conversion
@@ -94,19 +95,19 @@ typedef struct
 
 typedef enum
 {
-    Discharge_Isense_AN0 =  0x0,
-    Thermistor_AN1 =  0x1,
-    ISL_AnalogOut_AN4 =  0x4,
-    ChrgDetect_AN7 =  0x7,
-    SV09Check_AN10 =  0xA,
-    channel_Temp =  0x1D,
-    channel_DAC =  0x1E,
-    channel_FVR =  0x1F
+    Discharge_Isense_AN0 = 0x0,
+    Thermistor_AN1 = 0x1,
+    ISL_AnalogOut_AN4 = 0x4,
+    ChrgDetect_AN7 = 0x7,
+    SV09Check_AN10 = 0xA,
+    channel_Temp = 0x1D,
+    channel_DAC = 0x1E,
+    channel_FVR = 0x1F
 } adc_channel_t;
 
 /**
   Section: ADC Module APIs
-*/
+ */
 
 /**
   @Summary
@@ -127,7 +128,7 @@ typedef enum
     None
 
   @Comment
-    
+
 
   @Example
     <code>
@@ -136,7 +137,7 @@ typedef enum
     ADC_Initialize();
     convertedValue = ADC_GetConversionResult();
     </code>
-*/
+ */
 void ADC_Initialize(void);
 
 /**
@@ -166,7 +167,7 @@ void ADC_Initialize(void);
     ADC_StartConversion();
     convertedValue = ADC_GetConversionResult();
     </code>
-*/
+ */
 void ADC_SelectChannel(adc_channel_t channel);
 
 /**
@@ -175,7 +176,7 @@ void ADC_SelectChannel(adc_channel_t channel);
 
   @Description
     This routine is used to start conversion of desired channel.
-    
+
   @Preconditions
     ADC_Initialize() function should have been called before calling this function.
 
@@ -189,11 +190,11 @@ void ADC_SelectChannel(adc_channel_t channel);
     <code>
     uint16_t convertedValue;
 
-    ADC_Initialize();    
+    ADC_Initialize();
     ADC_StartConversion();
     convertedValue = ADC_GetConversionResult();
     </code>
-*/
+ */
 void ADC_StartConversion(void);
 
 /**
@@ -288,7 +289,7 @@ adc_result_t ADC_GetConversionResult(void);
 
     conversion = ADC_GetConversion(AN1_Channel);
     </code>
-*/
+ */
 adc_result_t ADC_GetConversion(adc_channel_t channel);
 
 /**
@@ -297,7 +298,7 @@ adc_result_t ADC_GetConversion(adc_channel_t channel);
 
   @Description
     This routine should be called when temperature sensor is used.
-    
+
   @Preconditions
     ADC_Initialize() function should have been called before calling this function.
 
@@ -311,22 +312,22 @@ adc_result_t ADC_GetConversion(adc_channel_t channel);
     <code>
     uint16_t convertedValue;
 
-    ADC_Initialize();    
+    ADC_Initialize();
     ADC_StartConversion();
     ADC_temperatureAcquisitionDelay();
     convertedValue = ADC_GetConversionResult();
     </code>
-*/
+ */
 void ADC_TemperatureAcquisitionDelay(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
-    }
+}
 
 #endif
 
 #endif	//ADC_H
 /**
  End of File
-*/
+ */
 
