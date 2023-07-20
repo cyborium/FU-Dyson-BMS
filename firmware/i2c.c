@@ -37,23 +37,7 @@ static uint8_t timeout_counter = 0;
 
 bool I2C1_CheckErrorCondition()
 {
-    if (SSP1CON2bits.ACKSTAT)
-    {
-        return true;
-    }
-    if (SSP1CON1bits.WCOL)
-    {
-        return true;
-    }
-    if (SSP1CON1bits.SSPOV)
-    {
-        return true;
-    }
-    if (PIR2bits.BCL1IF)
-    {
-        return true;
-    }
-    if (timeout_counter > 250)
+    if (SSP1CON2bits.ACKSTAT || SSP1CON1bits.WCOL || SSP1CON1bits.SSPOV || PIR2bits.BCL1IF || timeout_counter > 250)
     {
         return true;
     }
@@ -95,9 +79,7 @@ void I2C1_Disable(void)
  ***************************************************************************************/
 i2c_result_t I2C1_ReadMemory(unsigned char devAddr, unsigned char reg, unsigned char *dest, unsigned char size)
 {
-    i2c_result_t res;
-
-    res = _I2C1_WriteReg(devAddr, reg); // Send reg address
+    i2c_result_t res = _I2C1_WriteReg(devAddr, reg); // Send reg address
     if (res) return res; // Check for errors
     return I2C1_Read(devAddr, dest, size); // Read memory
 }
@@ -107,9 +89,7 @@ i2c_result_t I2C1_ReadMemory(unsigned char devAddr, unsigned char reg, unsigned 
  ***************************************************************************************/
 i2c_result_t I2C1_WriteMemory(unsigned char devAddr, unsigned char reg, unsigned char *src, unsigned char size)
 {
-    i2c_result_t res;
-
-    res = _I2C1_WriteReg(devAddr, reg); // Send reg address
+    i2c_result_t res = _I2C1_WriteReg(devAddr, reg); // Send reg address
     if (res) return res; // Check for errors
     _I2C1_No_WrStart = 1; // Don't send repeated start
     return I2C1_Write(devAddr, src, size); // Write memory
@@ -121,10 +101,8 @@ i2c_result_t I2C1_WriteMemory(unsigned char devAddr, unsigned char reg, unsigned
  ***************************************************************************************/
 i2c_result_t I2C1_Read(unsigned char devAddr, unsigned char *dest, unsigned char size)
 {
-    i2c_result_t res;
-
     _I2C1_StartBit(); // send start bit
-    res = _I2C1_GetError();
+    i2c_result_t res = _I2C1_GetError();
     if (res) return res; // Check for errors
     _I2C1_Write(devAddr | 1); // send device address (RW bit = Read)
     res = _I2C1_GetError();
@@ -177,10 +155,8 @@ i2c_result_t I2C1_Write(unsigned char devAddr, unsigned char *src, unsigned char
  ***************************************************************************************/
 static i2c_result_t _I2C1_WriteReg(unsigned char devAddr, unsigned char reg)
 {
-    i2c_result_t res;
-
     _I2C1_StartBit(); // send start bit
-    res = _I2C1_GetError();
+    i2c_result_t res = _I2C1_GetError();
     if (res) return res; // Check for errors
     _I2C1_Write(devAddr); // send device address (RW bit = Write)
     res = _I2C1_GetError();

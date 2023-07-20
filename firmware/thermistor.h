@@ -240,17 +240,4 @@ uint8_t const (*ThermistorLUT[2])[2] = {SV09_thermistor_LUT, SV11_thermistor_LUT
 uint8_t getThermistorTemp(modelnum_t modelnum);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #endif	/* THERMISTOR_H */
-

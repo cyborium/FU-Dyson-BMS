@@ -19,16 +19,15 @@
 
 bool safetyChecks(void)
 {
-    bool result = true;
-    result &= (isl_int_temp < MAX_DISCHARGE_TEMP_C); //Internal ISL temp is OK
-    result &= (thermistor_temp < MAX_DISCHARGE_TEMP_C); //Thermistor temp is OK
-    result &= (isl_int_temp > MIN_TEMP_C); //Make sure it isn't too cold for charger or discharging
-    result &= (thermistor_temp > MIN_TEMP_C);
-    result &= (ISL_RegData[Status] == 0); //No ISL error flags
-    result &= (discharge_current_mA < MAX_DISCHARGE_CURRENT_mA); //We aren't discharging more than 30A
+    bool result = (isl_int_temp < MAX_DISCHARGE_TEMP_C) //Internal ISL temp is OK
+            && (thermistor_temp < MAX_DISCHARGE_TEMP_C) //Thermistor temp is OK
+            && (isl_int_temp > MIN_TEMP_C) //Make sure it isn't too cold for charger or discharging
+            && (thermistor_temp > MIN_TEMP_C)
+            && (ISL_RegData[Status] == 0) //No ISL error flags
+            && (discharge_current_mA < MAX_DISCHARGE_CURRENT_mA); //We aren't discharging more than 30A
 
-    if (!result && state != ERROR)
-    { //Makes sure we don't write new errors in to past_error_reason while we are in the error state
+    if (!result && state != ERROR) //Makes sure we don't write new errors in to past_error_reason while we are in the error state
+    {
         setErrorReasonFlags(&past_error_reason);
     }
 
@@ -47,10 +46,7 @@ bool maxCellOK(void)
 
 bool chargeTempCheck(void)
 {
-    bool result = true;
-    result &= (isl_int_temp < MAX_CHARGE_TEMP_C);
-    result &= (thermistor_temp < MAX_CHARGE_TEMP_C);
-
+    bool result = (isl_int_temp < MAX_CHARGE_TEMP_C) && (thermistor_temp < MAX_CHARGE_TEMP_C);
     if (!result && state != ERROR)
     {
         setErrorReasonFlags(&past_error_reason);
@@ -116,7 +112,5 @@ void setErrorReasonFlags(volatile error_reason_t *datastore)
 
         datastore->TEMP_HYSTERESIS |= (thermistor_temp > MIN_TEMP_C) && !(thermistor_temp - HYSTERESIS_TEMP_C > MIN_TEMP_C);
         datastore->TEMP_HYSTERESIS |= (isl_int_temp > MIN_TEMP_C) && !(isl_int_temp - HYSTERESIS_TEMP_C > MIN_TEMP_C);
-
     }
-
 }

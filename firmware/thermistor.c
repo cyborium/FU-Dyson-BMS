@@ -70,13 +70,8 @@ uint8_t getThermistorTemp(modelnum_t modelnum)
     { //If pic thermistor is closer to i+1, return i+1
         return ThermistorLUT[modelnum][index + 1][temp];
     }
-    else if (dist_to_i == dist_to_i_plus_one)
-    { //If they are equidistant, round the temperature up (use the lower index))
-        return ThermistorLUT[modelnum][index][temp];
-    }
     else
-    {
-        __debug_break(); //panic
+    { //If they are equidistant, round the temperature up (use the lower index))
         return ThermistorLUT[modelnum][index][temp];
     }
 }

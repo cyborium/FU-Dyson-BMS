@@ -110,7 +110,7 @@ void ledBlinkpattern(uint8_t num_blinks, uint8_t led_color_rgb,
         { //Make sure we won't go below zero
             EPWM1_LoadDutyValue((uint16_t) (current_pwm + pwm_fade_slope));
         }
-        else if (current_pwm <= -pwm_fade_slope)
+        else
         {
             EPWM1_LoadDutyValue(0);
             nonblocking_wait_counter.value = next_step_time / 32; //Shortcut to next LED step
@@ -131,7 +131,7 @@ void ledBlinkpattern(uint8_t num_blinks, uint8_t led_color_rgb,
         { //make sure we don't overflow 1023 max pwm
             EPWM1_LoadDutyValue((uint16_t) (current_pwm + pwm_fade_slope));
         }
-        else if (current_pwm + pwm_fade_slope >= 1023)
+        else
         {
             EPWM1_LoadDutyValue(1023);
             nonblocking_wait_counter.value = (next_step_time / 32) + 1; //Shortcut to next LED step
@@ -164,34 +164,12 @@ void resetLEDBlinkPattern(void)
 
 void Set_LED_RGB(uint8_t RGB_en, uint16_t PWM_val)
 {
+
     EPWM1_LoadDutyValue(PWM_val);
 
-    if (RGB_en & 0b001)
-    {
-        blueLED = 1;
-    }
-    else
-    {
-        blueLED = 0;
-    }
-
-    if (RGB_en & 0b010)
-    {
-        greenLED = 1;
-    }
-    else
-    {
-        greenLED = 0;
-    }
-
-    if (RGB_en & 0b100)
-    {
-        redLED = 1;
-    }
-    else
-    {
-        redLED = 0;
-    }
+    blueLED = RGB_en & 0b001;
+    greenLED = (RGB_en & 0b010) >> 1;
+    redLED = (RGB_en & 0b100) >> 2;
 }
 
 bool cellDeltaLEDIndicator(void)
@@ -204,10 +182,8 @@ bool cellDeltaLEDIndicator(void)
         resetLEDBlinkPattern();
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool cellVoltageLEDIndicator(void)
@@ -227,8 +203,6 @@ bool cellVoltageLEDIndicator(void)
         loaded_num_green_blinks = 1; //This reads and holds the number of blinks to be presented so the blink count won't change even if cell voltages do.
     }
 
-
-
     LED_code_cycle_counter.enable = true;
     ledBlinkpattern(num_green_blinks, 0b010, 250, 250, 500, 500, 0);
     if (LED_code_cycle_counter.value > 1)
@@ -238,8 +212,6 @@ bool cellVoltageLEDIndicator(void)
         loaded_num_green_blinks = 0;
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
